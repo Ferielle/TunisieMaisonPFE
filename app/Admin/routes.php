@@ -12,9 +12,9 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
-    $router->get('/', 'HomeController@index')->name('home');
+    $router->get('/', 'HomeController@index')->withoutMiddleware(['auth']);
     $router->resource('immeuble', ImmeubleController::class);
-    $router->get('statistics', [StatisticController::class, 'index'])->name('statistics.index');
+     $router->get('statistics', [StatisticController::class, 'index'])->name('statistics.index');
 
 
 });

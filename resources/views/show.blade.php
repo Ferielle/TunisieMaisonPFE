@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -61,28 +60,39 @@
                         </div>
                     </div>
 
-                    @if($user)
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Seller Information</h5>
-                                <p class="card-text"><strong>Name:</strong> {{ $user->firstname }}</p>
-                                <p class="card-text"><strong>Email:</strong> {{ $user->email }}</p>
-                                <p class="card-text"><strong>Phone:</strong> {{ $user->phone ?? 'Not provided' }}</p> <!-- assuming phone is an optional field -->
-                            </div>
-                        </div>
-                    @else
-                        <div class="alert alert-info mt-4">
-                            No seller information available.
-                        </div>
-                    @endif
+                    <div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">Owner Information</h5>
+        <p class="card-text"><strong>Name:</strong> {{ $immeuble->owner_name }}</p>
+        <p class="card-text"><strong>Phone:</strong> {{ $immeuble->owner_phone ?? 'Not provided' }}</p> <!-- assuming phone is an optional field -->
+    </div>
+</div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+<div>
+<div class="payment-options">
+    <h5>Choose Payment Method:</h5>
+    <a href="{{ route('blockchain.form', ['dynamicAmount' => $immeuble->price]) }}" class="btn btn-primary">Pay with Bitcoin</a>
+    <input type="hidden" id="product-amount" value="{{ $immeuble->price }}">
+    <a href="{{ route('stripe.form', ['amount' => $immeuble->price]) }}" class="btn btn-primary">Pay with Credit Card</a>
 
-@section('styles')
+</div>
+<footer>
+<component is="script">
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script type="text/javascript" src="{{ asset('js/stripe.js') }}"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
+</component>
+</footer>
+
+
+</div>
+
 <style>
     .my-custom-background {
         background-color: #f5f5f5;
@@ -109,5 +119,4 @@
         border-radius: 10px;
     }
 </style>
-@endsection
 ``

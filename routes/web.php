@@ -1,73 +1,104 @@
 <?php
-
+use App\Http\Controllers\PayementController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserImmeubleController;
+use App\Http\Controllers\BlockchainController;
+use App\Http\Controllers\EmailController;
+use App\Admin\Controllers\ImmeubleController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserImmeubleController;
-use App\Admin\Controllers\ImmeubleController;
+use App\Admin\Controllers\HomeController;
 
+// Route to send Ether to a contract
+Route::post('/send-ether', [BlockchainController::class, 'sendEther'])->name('send.ether');
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-//Route::get('/index', [HomeController::class, 'index'])->name('index');
+// Route to check the balance of a deployed contract
+Route::get('/contract-balance', [BlockchainController::class, 'getContractBalance'])->name('contract.balance');
 
-//Route::get('/index', [HomeController::class, 'index'])->name('index');
-//Route::get('/home', [HomeController::class, 'home'])->name('home');
-Route::get('/', function () {
-    return redirect('/home');
-});
-
-
+// Route for home/dashboard
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/list', [App\Http\Controllers\HomeController::class, 'list'])->name('list');
+//Route::get('/admin', [HomeController::class, 'index'])->name('admin.home');
 
+// Authentication Routes
 Auth::routes();
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Route::get('/', function () {
-//     return view('home'); // Utilisez le fichier home.blade.php
-// });
-
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth');
-//Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route pour afficher le formulaire d'édition du profil
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-
-// Route pour mettre à jour le profil
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
-
-// Route pour afficher le formulaire de demande de réinitialisation de mot de passe
-Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-
-// Route pour envoyer le lien de réinitialisation de mot de passe
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-
-// Route pour afficher le formulaire de réinitialisation de mot de passe
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-
-// Route pour réinitialiser le mot de passe
-Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-
-// Assure-toi que la route est protégée par le middleware auth
+// Profile management routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/immeubles', [UserImmeubleController::class, 'index'])->name('user.immeubles.index');
-    // Ajoute d'autres routes protégées ici si nécessaire
-});
-Route::get('/immeubles/reserve/{id}', [UserImmeubleController::class, 'reserve'])->name('user.immeubles.reserve');
-Route::get('/reserve/{id}', [UserImmeubleController::class, 'reserve'])->name('reserve');
-Route::post('/immeubles/payment', [PaymentController::class, 'process'])->name('payment.process');
-Route::post('/complete-payment', [UserImmeubleController::class, 'completePayment'])->name('completePayment');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-//show details
+
+
+    // //added recently
+    // Route::get('/immeubles/reserve/{id}', [UserImmeubleController::class, 'reserve'])->name('user.immeubles.reserve');
+    // Route::get('/reserve/{id}', [UserImmeubleController::class, 'reserve'])->name('reserve');
+    // Route::post('/immeubles/payment', [PaymentController::class, 'process'])->name('payment.process');
+    // Route::post('/complete-payment', [UserImmeubleController::class, 'completePayment'])->name('completePayment');
+
+    // //show details
+
+    // Route::get('/immeubles/{id}/details', [ImmeubleController::class, 'detail'])->name('user.immeubles.details');
+
+
+});
+// Stripe Payment Routes
+// Route::get('/pay-with-card', [PayementController::class, 'showStripeForm'])->name('stripe.form');
+// Route::post('/process-payment', [PayementController::class, 'process'])->name('stripe.process');
+
 
 Route::get('/immeubles/{id}/details', [ImmeubleController::class, 'detail'])->name('user.immeubles.details');
+Route::get('/immeubles/reserve/{id}', [UserImmeubleController::class, 'reserve'])->name('user.immeubles.reserve');
+
+// Payment Routes
+Route::get('/pay-with-card', [PayementController::class, 'showStripeForm'])->name('stripe.form');
+//Route::post('/process-payment', [PayementController::class, 'process'])->name('stripe.process');
+Route::post('/complete-payment', [UserImmeubleController::class, 'completePayment'])->name('completePayment');
+Route::post('/immeubles/payment', [PayementController::class, 'process'])->name('payment.process');
+Route::get('/payment/success', [PayementController::class, 'successPage'])->name('payment.success');
+
+Route::get('/process-payment', [PayementController::class, 'showForm'])->name('payment.form');
+Route::post('/process-payment', [PayementController::class, 'process'])->name('payment.process');
 
 
+Route::post('/process-payment', [PayementController::class, 'process'])->name('payment.process'); // Process payment here
+Route::get('/process-payment', [PayementController::class, 'showForm'])->name('payment.form');
+
+
+
+
+
+
+// Route::get('/blockchainpayement', function () {
+//     return view('payments.blockchain-form');
+// });
+
+
+
+// Blockchain Payment Route
+//Route::get('/blockchain-payment', [BlockchainController::class, 'showBlockchainForm'])->name('blockchain.form');
+Route::post('/send-ether', [BlockchainController::class, 'sendEther'])->name('blockchain.send');
+Route::get('/blockchain-payment/{dynamicAmount}', [BlockchainController::class, 'showBlockchainForm'])->name('blockchain.form');
+
+// Welcome email route
+Route::post('/send-welcome-email', [EmailController::class, 'sendWelcomeEmail']);
+
+// Logout route
 Route::post('/logout', function() {
     Auth::logout();
-    return redirect('/home'); // Redirige vers /home après la déconnexion
+    return redirect('/home');
 })->name('logout');
+
+// Success page after purchase
+Route::get('/purchase-success', function () {
+    return view('purchase-success');
+});
+Route::get('/payment-success', function () {
+    return view('success');
+})->name('payment.success');
+Route::get('/payment-error', function () {
+    return view('failed');
+})->name('payment.failed');

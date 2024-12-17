@@ -265,6 +265,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -303,8 +304,8 @@
                     <p><strong>Adresse :</strong> {{ $immeuble->address }}</p>
                     <p><strong>Prix :</strong> {{ number_format($immeuble->price, 2) }} TND</p>
                     <p>{{ $immeuble->description }}</p>
-                    <a href="{{ route('reserve', $immeuble->id) }}" class="btn-reserve">Réserver</a>
-                </div>
+                  <a href="{{ route('user.immeubles.reserve', $immeuble->id) }}" class="btn-reserve">Réserver</a>
+                    </div>
             </div>
         @endforeach
     </div>
@@ -312,6 +313,8 @@
     <p class="text-center">Aucun immeuble trouvé.</p>
 @endif
         </main>
+           <a href="{{ route('list') }}" class="btn btn-primary">See the rest of the real estates</a>
+
         <footer class="footer">
             <div class="footer-description">
                 <p>

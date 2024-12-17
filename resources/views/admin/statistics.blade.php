@@ -115,9 +115,9 @@
     <div class="sidebar">
         <h2>Menu</h2>
         <ul>
-            <li><a href="{{ route('admin.home') }}">Accueil</a></li>
-            <li><a href="{{ route('admin.immeuble.index') }}">Immobilier</a></li>
-            <li><a href="{{ route('admin.statistics.index') }}">Statistiques</a></li>
+        <!-- <li><a href="{{ route('admin.home') }}">Accueil</a></li> -->
+        <li><a href="{{ route('admin.immeuble.index') }}">Immobilier</a></li>
+          <!--  <li><a href="{{ route('admin.statistics.index') }}">Statistiques</a></li> -->
         </ul>
     </div>
     <div class="content">
