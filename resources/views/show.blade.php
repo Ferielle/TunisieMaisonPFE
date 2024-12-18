@@ -9,7 +9,7 @@
                         <div class="carousel-inner">
                             @foreach($immeuble->pictures as $index => $picture)
                                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                    <img src="{{ asset('storage/' . $picture) }}" class="d-block w-100" alt="...">
+                                <img src="{{ asset('images/placeholder.png') }}" class="card-img-top" alt="Placeholder">
                                 </div>
                             @endforeach
                         </div>
@@ -23,7 +23,7 @@
                         </button>
                     </div>
                 @else
-                    <img src="{{ asset('storage/' . $immeuble->picture) }}" class="card-img-top" alt="{{ $immeuble->name }}">
+                <img src="{{ asset('images/placeholder.png') }}" class="card-img-top" alt="Placeholder">
                 @endif
 
                 <div class="card-body">

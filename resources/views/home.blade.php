@@ -91,8 +91,11 @@
 
 .immeuble-card img {
     width: 100%;
-    height: auto; /* Conserve les proportions de l'image */
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
 }
+
 
 .immeuble-card .card-body {
     padding: 15px;

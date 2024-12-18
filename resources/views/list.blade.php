@@ -18,6 +18,7 @@
                         <p><strong>Adresse :</strong> {{ $immeuble->address }}</p>
                         <p><strong>Prix :</strong> {{ number_format($immeuble->price, 2) }} TND</p>
                         <p>{{ $immeuble->description }}</p>
+                    <a href="{{ route('user.immeubles.reserve', $immeuble->id) }}" class="btn-reserve">Réserver</a>
                     </div>
                 </div>
             @endforeach
@@ -114,9 +115,12 @@ transition: transform 0.3s;
 }
 
 .immeuble-card img {
-width: 100%;
-height: auto; /* Conserve les proportions de l'image */
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
 }
+
 
 .immeuble-card .card-body {
 padding: 15px;
